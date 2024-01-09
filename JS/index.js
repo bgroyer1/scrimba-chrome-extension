@@ -2,14 +2,30 @@ let myLeads = []
 const inputEl = document.getElementById("input-el")
 const inputBtn = document.getElementById("input-btn")
 const ulEl = document.getElementById("ul-el")
+const saveTab = document.querySelector("#save-tab-btn")
+const deleteBtn = document.querySelector("#delete-btn")
 
-localStorage.getItem("myLeads")
 
+let leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"))
+if (leadsFromLocalStorage) {
+    myLeads = leadsFromLocalStorage
+    renderLeads()
+}
 
 inputBtn.addEventListener("click", function() {
     myLeads.push(inputEl.value)
     inputEl.value = ""
+    localStorage.setItem("myLeads", JSON.stringify(myLeads))
     renderLeads()
+})
+
+deleteBtn.addEventListener("click", () => {
+    let confirm = window.confirm("Are you sure you want to delete?")
+    if (confirm === true) {
+        myLeads = []
+        localStorage.clear()
+        ulEl.textContent = null
+    } 
 })
 
 function renderLeads() {
